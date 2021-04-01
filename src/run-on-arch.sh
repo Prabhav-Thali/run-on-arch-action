@@ -37,7 +37,7 @@ install_deps () {
   #            linux/386, linux/arm/v7, linux/arm/v6
   sudo apt-get update -q -y
   sudo apt-get -qq install -y qemu qemu-user-static
-  docker run --rm --privileged shahid1984/binfmt:qemu6rc1 --reset -p yes
+  docker run --rm --privileged shahid1984/binfmt:qemu6rc1
 }
 
 build_container () {
