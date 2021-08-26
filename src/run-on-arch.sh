@@ -37,7 +37,18 @@ install_deps () {
   #            linux/386, linux/arm/v7, linux/arm/v6
   sudo apt-get update -q -y
   sudo apt-get -qq install -y qemu qemu-user-static
-  docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+  if [ -d binfmt ]; then
+		    sudo rm -rf binfmt
+	fi
+	git clone https://github.com/tonistiigi/binfmt.git
+	cd binfmt
+	git checkout e7205b99a31dda065c25c4f1a41c70352c436fe2
+	QEMU_VERSION=master docker buildx bake --no-cache --load mainline
+	cd ..
+	rm -rf binfmt
+	docker run --privileged --rm tonistiigi/binfmt:test --install all
+   
+  #docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 }
 
 build_container () {
